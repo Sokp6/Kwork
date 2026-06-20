@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Kwork Лента</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a0a0c">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== ЛЕНТА ЗАКАЗОВ ===== -->
+  <div id="screen-feed" class="screen active">
+    <header class="topbar">
+      <h1 class="app-title">Лента заказов</h1>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="filterBtn" aria-label="Фильтры">⚙️</button>
+        <button class="icon-btn" id="refreshBtn" aria-label="Обновить">🔄</button>
+      </div>
+    </header>
+
+    <!-- Поиск -->
+    <div class="search-wrap">
+      <input type="text" id="searchInput" class="search-input" placeholder="Фильтр по словам: бот, python, сайт...">
+    </div>
+
+    <!-- Категории-чипы -->
+    <div class="cat-chips" id="catChips">
+      <button class="cat-chip active" data-cat="all">Все IT</button>
+      <button class="cat-chip" data-cat="41">Разработка</button>
+      <button class="cat-chip" data-cat="79">Боты</button>
+      <button class="cat-chip" data-cat="42">Дизайн</button>
+      <button class="cat-chip" data-cat="45">Тексты</button>
+    </div>
+
+    <main class="content">
+      <!-- Статус загрузки -->
+      <div id="loadingState" class="loading-state">
+        <div class="spinner"></div>
+        <p id="loadingText">Загружаем заказы с Kwork...</p>
+      </div>
+
+      <!-- Список заказов -->
+      <div id="ordersList" class="orders-list"></div>
+
+      <!-- Экран ошибки парсинга -->
+      <div id="parseError" class="parse-error hidden">
+        <div class="pe-icon">⚠️</div>
+        <h3 id="peTitle">Не удалось прочитать заказы</h3>
+        <p id="peMessage"></p>
+        <button class="btn-secondary" id="peRetry">Повторить</button>
+        <button class="btn-secondary" id="peOpenSite">Открыть Kwork напрямую</button>
+        <details class="pe-details">
+          <summary>Технические детали (для разработчика)</summary>
+          <pre id="peRaw"></pre>
+        </details>
+      </div>
+
+      <!-- Пустой результат после фильтра -->
+      <p id="emptyFilter" class="empty-state hidden">
+        Под фильтр ничего не попало. Измени слова или категорию.
+      </p>
+    </main>
+  </div>
+
+  <!-- ===== ИЗБРАННОЕ ===== -->
+  <div id="screen-saved" class="screen">
+    <header class="topbar">
+      <h1 class="app-title">Избранное</h1>
+    </header>
+    <main class="content">
+      <div id="savedList" class="orders-list"></div>
+      <p id="savedEmpty" class="empty-state hidden">
+        Пусто. Нажми ☆ на заказе, чтобы сохранить.
+      </p>
+    </main>
+  </div>
+
+  <!-- ===== НАСТРОЙКИ ===== -->
+  <div id="screen-settings" class="screen">
+    <header class="topbar">
+      <h1 class="app-title">Настройки</h1>
+    </header>
+    <main class="content">
+      <div class="settings-block">
+        <label class="settings-label">Минимальный бюджет (₽)</label>
+        <input type="number" id="minBudget" class="settings-input" placeholder="0" min="0" step="500">
+      </div>
+      <div class="settings-block">
+        <label class="settings-label">Максимальный бюджет (₽)</label>
+        <input type="number" id="maxBudget" class="settings-input" placeholder="без лимита" min="0" step="500">
+      </div>
+      <div class="settings-block">
+        <label class="settings-label">Сколько заказов грузить</label>
+        <select id="limitSelect" class="settings-input">
+          <option value="30">30</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+      <div class="settings-block">
+        <button id="clearBtn" class="btn-danger full-width">Очистить избранное и настройки</button>
+      </div>
+      <p class="settings-note">Kwork Лента v1.0.0 — парсер открытых заказов</p>
+      <p class="settings-note" id="modeNote"></p>
+    </main>
+  </div>
+
+  <!-- ===== НИЖНЯЯ НАВИГАЦИЯ ===== -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-nav="feed">
+      <span class="nav-icon">🔥</span><span class="nav-label">Лента</span>
+    </button>
+    <button class="nav-btn" data-nav="saved">
+      <span class="nav-icon">⭐</span><span class="nav-label">Избранное</span>
+    </button>
+    <button class="nav-btn" data-nav="settings">
+      <span class="nav-icon">⚙️</span><span class="nav-label">Настройки</span>
+    </button>
+  </nav>
+
+  <script src="parser.js"></script>
+  <script src="storage.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
